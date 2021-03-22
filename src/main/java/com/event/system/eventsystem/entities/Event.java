@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.event.system.eventsystem.dto.EventDTOInsert;
+
 @Entity
 @Table(name="TB_EVENT")
 public class Event implements Serializable{
@@ -41,6 +43,16 @@ public class Event implements Serializable{
       this.startTime = startTime;
       this.endTime = endTime;
       this.emailContact = emailContact;
+   }
+
+   public Event(EventDTOInsert eventDTO) {
+      this.name = eventDTO.getName();
+      this.description = eventDTO.getDescription();
+      this.startDate = eventDTO.getStartDate();
+      this.endDate = eventDTO.getEndDate();
+      this.startTime = eventDTO.getStartTime();
+      this.endTime = eventDTO.getEndTime();
+      this.emailContact = eventDTO.getEmailContact();
    }
 
    public Long getId() {
