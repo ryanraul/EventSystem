@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.EventDTOInsert;
+import com.event.system.eventsystem.services.ValidationResult;
 
 @Entity
 @Table(name="TB_EVENT")
@@ -28,6 +29,63 @@ public class Event implements Serializable{
    private LocalTime startTime;
    private LocalTime endTime;
    private String emailContact;
+
+   
+   public ValidationResult Validate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      validationResult = DatesAndTimesValidate(); 
+
+      if(!validationResult.IsValid())
+         return validationResult;
+      
+      validationResult = NameValidate(); 
+
+      if(!validationResult.IsValid())
+         return validationResult;
+
+      validationResult = EmailValidate(); 
+
+      if(!validationResult.IsValid())
+         return validationResult;
+
+      return validationResult;
+
+   }
+  
+   private ValidationResult EmailValidate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.emailContact.isEmpty())
+         validationResult.setErrors("Error: The name of event can't be empty!");
+      
+      return validationResult;
+   }
+
+   private ValidationResult NameValidate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.name.isEmpty())
+         validationResult.setErrors("Error: The email of contact can't be empty!");
+      
+      return validationResult;
+   }
+
+   private ValidationResult DatesAndTimesValidate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.startDate.isAfter(this.endDate)){
+         validationResult.setErrors("Error: Start date is after end date!");
+         return validationResult;
+      }
+
+      if(this.startDate.isEqual(this.endDate) && this.startTime.isAfter(endTime)){
+         validationResult.setErrors("Error: Start time must be before end time!");
+         return validationResult;         
+      }
+      
+      return validationResult;
+   }
 
    public Event(){
 
@@ -143,6 +201,7 @@ public class Event implements Serializable{
          return false;
       return true;
    }
+
 
 
 }

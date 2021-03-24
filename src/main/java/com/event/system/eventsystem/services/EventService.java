@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.event.system.eventsystem.dto.EventDTO;
 import com.event.system.eventsystem.dto.EventDTOInsert;
+import com.event.system.eventsystem.dto.EventDTOUpdate;
 import com.event.system.eventsystem.entities.Event;
 import com.event.system.eventsystem.repositories.EventRepository;
 
@@ -42,9 +45,40 @@ public class EventService {
    }
    
    public EventDTO insertEvent(EventDTOInsert eventDTO){
-      Event event = new Event(eventDTO);
-      event = repo.save(event);
-      return new EventDTO(event);
+      try {                  
+         Event event = new Event(eventDTO);
+         var validation = event.Validate();
+         if(!validation.IsValid()){
+            throw new Exception(validation.getMessage());
+         }else{
+            event = repo.save(event);       
+         }
+         return new EventDTO(event);
+      } catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+      }
+   }
+
+   public EventDTO updateEvent(Long id, EventDTOUpdate eventDTO){
+      try {
+         Event event = repo.getOne(id);
+         event.setDescription(eventDTO.getDescription());
+         event.setStartDate(eventDTO.getStartDate());
+         event.setEndDate(eventDTO.getEndDate());
+         event.setStartTime(eventDTO.getStartTime());
+         event.setEndTime(eventDTO.getEndTime());
+         var validation = event.Validate();
+         if(!validation.IsValid())
+            throw new Exception(validation.getMessage());
+         event = repo.save(event);
+         return new EventDTO(event);
+      }catch (EntityNotFoundException e) {
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+      } 
+      catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+      }
+      
    }
 
 }

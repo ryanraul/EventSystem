@@ -32,4 +32,5 @@ public class EventDTO {
    public void setId(Long id) {
       this.id = id;
    }
+
 }
