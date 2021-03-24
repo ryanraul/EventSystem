@@ -10,6 +10,7 @@ import com.event.system.eventsystem.services.EventService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,10 +46,15 @@ public class EventController {
    }
    
    @PutMapping("{id}")
-	public ResponseEntity<EventDTO> updateClient(@RequestBody EventDTOUpdate eventDtoUpdate, @PathVariable Long id){
+	public ResponseEntity<EventDTO> updateEvent(@RequestBody EventDTOUpdate eventDtoUpdate, @PathVariable Long id){
 		EventDTO eventDTO = service.updateEvent(id, eventDtoUpdate); 
 		return ResponseEntity.ok().body(eventDTO);
 	}
-   
+
+   @DeleteMapping("{id}")
+	public ResponseEntity<Void> deleteEvent(@PathVariable Long id){
+		service.deleteEvent(id); 
+		return ResponseEntity.noContent().build();
+	}   
    
 }
