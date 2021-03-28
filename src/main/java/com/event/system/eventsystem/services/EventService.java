@@ -1,7 +1,4 @@
 package com.event.system.eventsystem.services;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -24,20 +21,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
    @Autowired EventRepository repo;
 
-   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place){
-      Page<Event> events = repo.find(pageRequest, name, place);
+   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter){ 
+      Page<Event> events = repo.find(pageRequest, name, place, dateFilter);
       return events.map(e -> new EventDTO(e));
-   }
-
-   private List<EventDTO> toDTOList(List<Event> events) {
-      List <EventDTO> eventsDTO = new ArrayList<>();
-
-      for (Event event: events){
-         EventDTO eventDTO = new EventDTO(event.getId(), event.getName(), event.getPlace());
-         eventsDTO.add(eventDTO);
-      }
-
-      return eventsDTO;
    }
 
    public EventDTO getEventById(Long id){

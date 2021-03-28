@@ -89,6 +89,11 @@ public class Event implements Serializable{
    public ValidationResult DatesAndTimesValidate() {
       ValidationResult validationResult = new ValidationResult();
 
+      if(this.startDate.isBefore(LocalDate.now())){
+         validationResult.setErrors("Error: Start date must be after or equal to today!");
+         return validationResult;
+      }
+
       if(this.startDate.isAfter(this.endDate)){
          validationResult.setErrors("Error: Start date is after end date!");
          return validationResult;
