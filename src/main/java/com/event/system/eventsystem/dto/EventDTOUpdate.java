@@ -6,22 +6,33 @@ import java.time.LocalTime;
 public class EventDTOUpdate {
    
    private String description;
+   private String place;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
    private LocalTime endTime;
 
-   public EventDTOUpdate(){
+   
 
+   public void setPlace(String place) {
+      this.place = place;
    }
 
-   public EventDTOUpdate(String description, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+   public EventDTOUpdate(String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
    LocalTime endTime) {
       this.description = description;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
       this.endTime = endTime;
+   }
+
+   public EventDTOUpdate(){
+
+   }
+
+   public String getPlace() {
+      return place;
    }
 
    public String getDescription() {

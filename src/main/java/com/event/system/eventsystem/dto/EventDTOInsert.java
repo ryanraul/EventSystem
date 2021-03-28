@@ -7,6 +7,7 @@ public class EventDTOInsert {
    
    private String name;
    private String description;
+   private String place;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
@@ -17,10 +18,11 @@ public class EventDTOInsert {
 
    }
 
-   public EventDTOInsert(String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+   public EventDTOInsert(String name, String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
       LocalTime endTime, String emailContact) {
       this.name = name;
       this.description = description;
+      this.place = place;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
@@ -28,6 +30,13 @@ public class EventDTOInsert {
       this.emailContact = emailContact;
    }
 
+   public String getPlace() {
+      return place;
+   }
+
+   public void setPlace(String place) {
+      this.place = place;
+   }
    public String getDescription() {
       return description;
    }

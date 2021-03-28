@@ -31,7 +31,7 @@ public class EventService {
       List <EventDTO> eventsDTO = new ArrayList<>();
 
       for (Event event: events){
-         EventDTO eventDTO = new EventDTO(event.getId(), event.getName());
+         EventDTO eventDTO = new EventDTO(event.getId(), event.getName(), event.getPlace());
          eventsDTO.add(eventDTO);
       }
 
@@ -64,10 +64,12 @@ public class EventService {
       try {
          Event event = repo.getOne(id);
          event.setDescription(eventDTO.getDescription());
+         event.setPlace(eventDTO.getPlace());
          event.setStartDate(eventDTO.getStartDate());
          event.setEndDate(eventDTO.getEndDate());
          event.setStartTime(eventDTO.getStartTime());
          event.setEndTime(eventDTO.getEndTime());
+
          var validation = event.Validate();
          if(!validation.IsValid())
             throw new Exception(validation.getMessage());

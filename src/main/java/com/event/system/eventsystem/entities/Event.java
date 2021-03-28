@@ -24,6 +24,7 @@ public class Event implements Serializable{
    private Long id;
    private String name;
    private String description;
+   private String place;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
@@ -44,6 +45,11 @@ public class Event implements Serializable{
       if(!validationResult.IsValid())
          return validationResult;
 
+      validationResult = PlaceValidate(); 
+
+      if(!validationResult.IsValid())
+         return validationResult;
+
       validationResult = EmailValidate(); 
 
       if(!validationResult.IsValid())
@@ -53,7 +59,16 @@ public class Event implements Serializable{
 
    }
   
-   private ValidationResult EmailValidate() {
+   public ValidationResult PlaceValidate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.place.isEmpty())
+         validationResult.setErrors("Error: The place of the event can't be empty!");
+      
+      return validationResult;
+   }
+
+   public ValidationResult EmailValidate() {
       ValidationResult validationResult = new ValidationResult();
 
       if(this.emailContact.isEmpty())
@@ -62,7 +77,7 @@ public class Event implements Serializable{
       return validationResult;
    }
 
-   private ValidationResult NameValidate() {
+   public ValidationResult NameValidate() {
       ValidationResult validationResult = new ValidationResult();
 
       if(this.name.isEmpty())
@@ -71,7 +86,7 @@ public class Event implements Serializable{
       return validationResult;
    }
 
-   private ValidationResult DatesAndTimesValidate() {
+   public ValidationResult DatesAndTimesValidate() {
       ValidationResult validationResult = new ValidationResult();
 
       if(this.startDate.isAfter(this.endDate)){
@@ -91,11 +106,12 @@ public class Event implements Serializable{
 
    }
    
-   public Event(Long id, String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+   public Event(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
          LocalTime endTime, String emailContact) {
       this.id = id;
       this.name = name;
       this.description = description;
+      this.place = place;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
@@ -106,11 +122,20 @@ public class Event implements Serializable{
    public Event(EventDTOInsert eventDTO) {
       this.name = eventDTO.getName();
       this.description = eventDTO.getDescription();
+      this.place = eventDTO.getPlace();
       this.startDate = eventDTO.getStartDate();
       this.endDate = eventDTO.getEndDate();
       this.startTime = eventDTO.getStartTime();
       this.endTime = eventDTO.getEndTime();
       this.emailContact = eventDTO.getEmailContact();
+   }
+
+   public String getPlace() {
+      return place;
+   }
+
+   public void setPlace(String place) {
+      this.place = place;
    }
 
    public Long getId() {
