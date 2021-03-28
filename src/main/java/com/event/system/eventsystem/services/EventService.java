@@ -21,8 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
    @Autowired EventRepository repo;
 
-   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter){ 
-      Page<Event> events = repo.find(pageRequest, name, place, dateFilter);
+   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter, String description){ 
+      Page<Event> events = repo.find(pageRequest, name, place, dateFilter, description);
       return events.map(e -> new EventDTO(e));
    }
 

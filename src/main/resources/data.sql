@@ -20,7 +20,7 @@ INSERT INTO TB_EVENT (name, description, place, start_Date, end_Date, start_Time
 VALUES( 'NLW4', 'For React learners', 'youtube', '2021-03-30', '2021-03-10', '07:00:00', '12:00:00', 'JA@email.com');
 
 INSERT INTO TB_EVENT (name, description, place, start_Date, end_Date, start_Time, end_Time, email_Contact) 
-VALUES( 'TecnoFacens 2024', 'Projects presentation', 'twitch',  '2021-04-01', '2021-04-10', '07:00:00', '12:00:00', 'JA@email.com');
+VALUES( 'TecnoFacens 2024', 'teste', 'twitch',  '2021-04-01', '2021-04-10', '07:00:00', '12:00:00', 'JA@email.com');
 
 INSERT INTO TB_EVENT (name, description, place, start_Date, end_Date, start_Time, end_Time, email_Contact) 
 VALUES( 'NLW5', 'For React learners', 'twitch',  '2021-04-06', '2021-03-10', '07:00:00', '12:00:00', 'JA@email.com');

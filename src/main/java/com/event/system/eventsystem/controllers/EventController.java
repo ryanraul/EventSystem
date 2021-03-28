@@ -37,10 +37,11 @@ public class EventController {
       @RequestParam(value = "orderBy",       defaultValue = "id") String orderBy,
       @RequestParam(value = "name",          defaultValue = "") String name,
       @RequestParam(value = "place",         defaultValue = "") String place,
-      @RequestParam(value = "dateFilter",    defaultValue = "0001-01-01") String dateFilter
+      @RequestParam(value = "dateFilter",    defaultValue = "0001-01-01") String dateFilter,
+      @RequestParam(value = "description",   defaultValue = "") String description
    ){
       PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
-      Page<EventDTO> eventsDTO = service.getEvents(pageRequest, name, place, dateFilter);
+      Page<EventDTO> eventsDTO = service.getEvents(pageRequest, name, place, dateFilter, description);
       return ResponseEntity.ok(eventsDTO);
    }
 
