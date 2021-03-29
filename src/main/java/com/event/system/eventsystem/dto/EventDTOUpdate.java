@@ -12,8 +12,6 @@ public class EventDTOUpdate {
    private LocalTime startTime;
    private LocalTime endTime;
 
-   
-
    public void setPlace(String place) {
       this.place = place;
    }

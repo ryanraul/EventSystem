@@ -38,7 +38,7 @@ public class EventService {
          Event event = new Event(eventDTO);
          var validation = event.Validate();
          if(!validation.IsValid()){
-            throw new Exception(validation.getMessage());
+            throw new Exception(validation.errors.get(0).message);
          }else{
             event = repo.save(event);       
          }
@@ -60,7 +60,7 @@ public class EventService {
 
          var validation = event.Validate();
          if(!validation.IsValid())
-            throw new Exception(validation.getMessage());
+            throw new Exception(validation.errors.get(0).message);
          event = repo.save(event);
          return new EventDTO(event);
       }catch (EntityNotFoundException e) {

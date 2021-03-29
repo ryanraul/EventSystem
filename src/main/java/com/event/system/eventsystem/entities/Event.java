@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.EventDTOInsert;
-import com.event.system.eventsystem.services.ValidationResult;
+import com.event.system.eventsystem.utils.ValidationResult;
 
 @Entity
 @Table(name="TB_EVENT")
