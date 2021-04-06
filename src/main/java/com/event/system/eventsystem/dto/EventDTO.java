@@ -11,7 +11,6 @@ public class EventDTO {
 
    }
 
-
    public EventDTO (Event event){
       this.id = event.getId();
       this.name = event.getName();

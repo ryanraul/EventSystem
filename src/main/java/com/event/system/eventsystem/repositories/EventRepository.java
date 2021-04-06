@@ -2,6 +2,8 @@ package com.event.system.eventsystem.repositories;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+
 import com.event.system.eventsystem.entities.Event;
 
 import org.springframework.data.domain.Page;
@@ -17,9 +19,9 @@ public interface EventRepository extends JpaRepository <Event, Long> {
          +"WHERE "
             +"(LOWER(e.name) LIKE LOWER(CONCAT('%', :name, '%'))) "      
             +"AND (LOWER(e.place) LIKE LOWER(CONCAT('%', :place, '%'))) "
-            +"AND (e.startDate > TO_DATE(:dateFilter,'YYYY-MM-DD'))"
+            +"AND (e.startDate > :dateFilter)"
             +"AND (LOWER(e.description) LIKE LOWER(CONCAT('%', :description, '%'))) "  
    )
-   public Page <Event> find(Pageable pageReaquest, String name, String place, String dateFilter, String description);
+   public Page <Event> find(Pageable pageReaquest, String name, String place, LocalDate dateFilter, String description);
 
 }

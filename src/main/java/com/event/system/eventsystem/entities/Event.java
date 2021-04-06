@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.EventDTOInsert;
+import com.event.system.eventsystem.dto.EventDTOUpdate;
 import com.event.system.eventsystem.utils.ValidationResult;
 
 @Entity
@@ -230,6 +231,15 @@ public class Event implements Serializable{
       } else if (!id.equals(other.id))
          return false;
       return true;
+   }
+
+   public void setEventToUpdate(EventDTOUpdate eventDTOUpdate) {
+         this.description = eventDTOUpdate.getDescription();
+         this.place = eventDTOUpdate.getPlace();
+         this.startDate = eventDTOUpdate.getStartDate();
+         this.endDate = eventDTOUpdate.getEndDate();
+         this.startTime = eventDTOUpdate.getStartTime();
+         this.endTime = eventDTOUpdate.getEndTime();
    }
 
 

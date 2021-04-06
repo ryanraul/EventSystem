@@ -1,4 +1,6 @@
 package com.event.system.eventsystem.services;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,9 +23,16 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
    @Autowired EventRepository repo;
 
-   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter, String description){ 
-      Page<Event> events = repo.find(pageRequest, name, place, dateFilter, description);
-      return events.map(e -> new EventDTO(e));
+   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter, String description){
+      try {
+         LocalDate date = LocalDate.parse(dateFilter);
+         Page<Event> events = repo.find(pageRequest, name, place, date, description);
+         return events.map(e -> new EventDTO(e));
+      } catch (DateTimeException exception) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date filter format is incorrect, the correct one is 'YYYY-MM-DD'");
+      } catch (Exception exception) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+      }
    }
 
    public EventDTO getEventById(Long id){
@@ -48,25 +57,19 @@ public class EventService {
       }
    }
 
-   public EventDTO updateEvent(Long id, EventDTOUpdate eventDTO){
+   public EventDTO updateEvent(Long id, EventDTOUpdate eventDTOUpdate){
       try {
          Event event = repo.getOne(id);
-         event.setDescription(eventDTO.getDescription());
-         event.setPlace(eventDTO.getPlace());
-         event.setStartDate(eventDTO.getStartDate());
-         event.setEndDate(eventDTO.getEndDate());
-         event.setStartTime(eventDTO.getStartTime());
-         event.setEndTime(eventDTO.getEndTime());
-
+         event.setEventToUpdate(eventDTOUpdate);
+         
          var validation = event.Validate();
          if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
          event = repo.save(event);
          return new EventDTO(event);
-      }catch (EntityNotFoundException e) {
+      } catch (EntityNotFoundException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
-      } 
-      catch (Exception e) {
+      } catch (Exception e) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
       
