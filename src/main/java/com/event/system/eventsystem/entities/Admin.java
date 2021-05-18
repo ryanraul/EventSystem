@@ -1,5 +1,9 @@
 package com.event.system.eventsystem.entities;
 
+import com.event.system.eventsystem.dto.AdminDTO.AdminDTOInsert;
+import com.event.system.eventsystem.dto.AdminDTO.AdminDTOUpdate;
+import com.event.system.eventsystem.utils.ValidationResult;
+
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -29,6 +33,36 @@ public class Admin extends User {
    public Admin(String name, String email, String phoneNumber) {
       super(name, email);
       this.phoneNumber = phoneNumber;
+   }
+
+   public Admin(AdminDTOInsert adminDTOInsert) {
+      super(adminDTOInsert.getName(), adminDTOInsert.getEmail());
+      this.phoneNumber = adminDTOInsert.getPhoneNumber();
+   }
+
+   public ValidationResult validate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      validationResult = nameValidate(); 
+
+      if(!validationResult.IsValid())
+         return validationResult;
+      
+      return validationResult;
+   }
+
+   public ValidationResult nameValidate() {
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.getName().isEmpty())
+         validationResult.setErrors("Error: Admin name can't be empty!");
+      
+      return validationResult;
+   }
+
+   public void setAdminToUpdate(AdminDTOUpdate adminDTOUpdate) {
+      setEmail(adminDTOUpdate.getEmail());
+      setPhoneNumber(adminDTOUpdate.getPhoneNumber());
    }
    
 
