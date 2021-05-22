@@ -1,7 +1,5 @@
 package com.event.system.eventsystem.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -13,6 +11,8 @@ import com.event.system.eventsystem.entities.Admin;
 import com.event.system.eventsystem.repositories.AdminRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,21 +22,15 @@ public class AdminService {
    @Autowired
    private AdminRepository adminRepository;
 
-   public List<AdminDTO> getAdmins(){
-		List<Admin> admins = adminRepository.findAll();
-      var adminsDTO = toDTOList(admins);
-      return adminsDTO;
-   }
-
-   private List<AdminDTO> toDTOList(List<Admin> admins) {
-      List <AdminDTO> adminsDTO = new ArrayList<>();
-
-      for (Admin admin: admins){
-         AdminDTO adminDTO = new AdminDTO(admin);
-         adminsDTO.add(adminDTO);
+   public Page<AdminDTO> getAdmins(PageRequest pageRequest, String name, String email){
+		try {
+         Page<Admin> admins = adminRepository.find(pageRequest, name, email);
+         return admins.map(a -> new AdminDTO(a));
+      } catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
 
-      return adminsDTO;
+      
    }
 
     public AdminDTO getAdminById(Long id) {
