@@ -29,8 +29,6 @@ public class AdminService {
       } catch (Exception e) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
-
-      
    }
 
     public AdminDTO getAdminById(Long id) {

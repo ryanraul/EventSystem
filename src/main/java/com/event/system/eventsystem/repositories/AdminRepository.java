@@ -18,6 +18,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long>{
             +"(LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%'))) "
             +"AND (LOWER(a.email) LIKE LOWER(CONCAT('%', :email, '%'))) "         
       )
-   public Page <Admin> find(Pageable pageRequest, String name, String email);
+   public Page<Admin> find(Pageable pageRequest, String name, String email);
    
 }
