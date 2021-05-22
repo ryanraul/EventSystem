@@ -9,7 +9,7 @@ INSERT INTO TB_ADMIN(user_id, phone_number)
    VALUES
       ( 1, '(15) 9999-99999');
 
-INSERT INTO TB_ATTENDEE(user_id, balance)
+INSERT INTO TB_ATTEND(user_id, balance)
    VALUES
       ( 2, 100),
       ( 3, 300);

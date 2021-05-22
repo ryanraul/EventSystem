@@ -1,18 +1,18 @@
-package com.event.system.eventsystem.dto.AttendeeDTO;
+package com.event.system.eventsystem.dto.AttendDTO;
 
-import com.event.system.eventsystem.entities.Attendee;
+import com.event.system.eventsystem.entities.Attend;
 
-public class AttendeeDTO {
+public class AttendDTO {
    private Long id;   
    private String name;   
    private String email;
    private Float balance;
    
-   public AttendeeDTO(Attendee attendee) {
-      this.id = attendee.getId();
-      this.name = attendee.getName();
-      this.email = attendee.getEmail();
-      this.balance = attendee.getBalance();
+   public AttendDTO(Attend attend) {
+      this.id = attend.getId();
+      this.name = attend.getName();
+      this.email = attend.getEmail();
+      this.balance = attend.getBalance();
    }
    
    public Long getId() {

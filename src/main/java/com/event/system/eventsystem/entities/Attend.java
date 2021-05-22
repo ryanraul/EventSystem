@@ -4,30 +4,30 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.event.system.eventsystem.dto.AttendeeDTO.AttendeeDTOInsert;
-import com.event.system.eventsystem.dto.AttendeeDTO.AttendeeDTOUpdate;
+import com.event.system.eventsystem.dto.AttendDTO.AttendDTOInsert;
+import com.event.system.eventsystem.dto.AttendDTO.AttendDTOUpdate;
 import com.event.system.eventsystem.utils.ValidationResult;
 
 @Entity
-@Table(name = "TB_ATTENDEE")
+@Table(name = "TB_ATTEND")
 @PrimaryKeyJoinColumn(name = "USER_ID")
-public class Attendee extends User {
+public class Attend extends User {
    private Float balance;
 
-   public Attendee() {
+   public Attend() {
 
    }
 
-   public Attendee(Float balance) {
+   public Attend(Float balance) {
       this.balance = balance;
    }
 
-   public Attendee(String name, String email, Float balance) {
+   public Attend(String name, String email, Float balance) {
       super(name, email);
       this.balance = balance;
    }
 
-   public Attendee(AttendeeDTOInsert attendeeDTOInsert){
+   public Attend(AttendDTOInsert attendeeDTOInsert){
       super(attendeeDTOInsert.getName(), attendeeDTOInsert.getEmail());
       this.balance = attendeeDTOInsert.getBalance();
    }
@@ -40,9 +40,9 @@ public class Attendee extends User {
       this.balance = balance;
    }
 
-   public void setAttendeeToUpdate(AttendeeDTOUpdate attendeeDTOUpdate) {
-      this.setEmail(attendeeDTOUpdate.getEmail());
-      this.setBalance(attendeeDTOUpdate.getBalance());
+   public void setAttendToUpdate(AttendDTOUpdate attendDTOUpdate) {
+      this.setEmail(attendDTOUpdate.getEmail());
+      this.setBalance(attendDTOUpdate.getBalance());
    }
 
    public ValidationResult validate() {
@@ -60,7 +60,7 @@ public class Attendee extends User {
       ValidationResult validationResult = new ValidationResult();
 
       if(this.getName().isEmpty())
-         validationResult.setErrors("Error: Attendee name can't be empty!");
+         validationResult.setErrors("Error: Attend name can't be empty!");
       
       return validationResult;
    }

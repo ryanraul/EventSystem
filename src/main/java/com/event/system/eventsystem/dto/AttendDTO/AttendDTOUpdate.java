@@ -1,6 +1,6 @@
-package com.event.system.eventsystem.dto.AttendeeDTO;
+package com.event.system.eventsystem.dto.AttendDTO;
 
-public class AttendeeDTOUpdate {
+public class AttendDTOUpdate {
    private String email;
    private Float balance;
 

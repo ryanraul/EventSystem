@@ -1,6 +1,6 @@
-package com.event.system.eventsystem.dto.AttendeeDTO;
+package com.event.system.eventsystem.dto.AttendDTO;
 
-public class AttendeeDTOInsert {
+public class AttendDTOInsert {
    private String name;
    private String email;
    private Float balance;
