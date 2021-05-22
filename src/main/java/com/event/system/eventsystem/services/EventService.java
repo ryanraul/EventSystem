@@ -23,10 +23,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
    @Autowired EventRepository repo;
 
-   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String place, String dateFilter, String description){
+   public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String dateFilter, String description){
       try {
          LocalDate date = LocalDate.parse(dateFilter);
-         Page<Event> events = repo.find(pageRequest, name, place, date, description);
+         Page<Event> events = repo.find(pageRequest, name, date, description);
          return events.map(e -> new EventDTO(e));
       } catch (DateTimeException exception) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date filter format is incorrect, the correct one is 'YYYY-MM-DD'");

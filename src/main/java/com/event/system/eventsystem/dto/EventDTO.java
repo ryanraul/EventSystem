@@ -1,11 +1,14 @@
 package com.event.system.eventsystem.dto;
 
+import java.util.List;
+
 import com.event.system.eventsystem.entities.Event;
+import com.event.system.eventsystem.entities.Place;
 
 public class EventDTO {
    private Long id;
    private String name;
-   private String place;
+   private List<Place> places;
    
    public EventDTO (){
 
@@ -14,21 +17,21 @@ public class EventDTO {
    public EventDTO (Event event){
       this.id = event.getId();
       this.name = event.getName();
-      this.place = event.getPlace();
+      this.places = event.getPlaces();
    }
 
-   public EventDTO(Long id, String name, String place) {
+   public EventDTO(Long id, String name, List<Place> places) {
       this.id = id;
       this.name = name;
-      this.place = place;
+      this.places = places;
    }
       
-   public String getPlace() {
-      return place;
+   public List<Place> getPlaces() {
+      return places;
    }
 
-   public void setPlace(String place) {
-      this.place = place;
+   public void addPlace(Place place) {
+      this.places.add(place);
    }
 
    public String getName() {

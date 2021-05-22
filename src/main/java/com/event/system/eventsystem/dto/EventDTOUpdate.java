@@ -2,21 +2,24 @@ package com.event.system.eventsystem.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import com.event.system.eventsystem.entities.Place;
 
 public class EventDTOUpdate {
    
    private String description;
-   private String place;
+   private List<Place> places;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
    private LocalTime endTime;
 
-   public void setPlace(String place) {
-      this.place = place;
+   public void setPlace(Place place) {
+      this.places.add(place);
    }
 
-   public EventDTOUpdate(String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+   public EventDTOUpdate(String description, List<Place> place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
    LocalTime endTime) {
       this.description = description;
       this.startDate = startDate;
@@ -29,8 +32,8 @@ public class EventDTOUpdate {
 
    }
 
-   public String getPlace() {
-      return place;
+   public List<Place> getPlaces() {
+      return places;
    }
 
    public String getDescription() {

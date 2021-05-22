@@ -2,12 +2,15 @@ package com.event.system.eventsystem.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+
+import com.event.system.eventsystem.entities.Place;
 
 public class EventDTOInsert {
    
    private String name;
    private String description;
-   private String place;
+   private List<Place> places;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
@@ -18,11 +21,11 @@ public class EventDTOInsert {
 
    }
 
-   public EventDTOInsert(String name, String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+   public EventDTOInsert(String name, String description, List<Place> places, LocalDate startDate, LocalDate endDate, LocalTime startTime,
       LocalTime endTime, String emailContact) {
       this.name = name;
       this.description = description;
-      this.place = place;
+      this.places = places;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
@@ -30,12 +33,12 @@ public class EventDTOInsert {
       this.emailContact = emailContact;
    }
 
-   public String getPlace() {
-      return place;
+   public List<Place> getPlaces() {
+      return places;
    }
 
-   public void setPlace(String place) {
-      this.place = place;
+   public void addPlace(Place place) {
+      this.places.add(place);
    }
    public String getDescription() {
       return description;

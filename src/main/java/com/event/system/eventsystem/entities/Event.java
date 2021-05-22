@@ -3,11 +3,16 @@ package com.event.system.eventsystem.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.EventDTOInsert;
@@ -25,15 +30,24 @@ public class Event implements Serializable{
    private Long id;
    private String name;
    private String description;
-   private String place;
    private LocalDate startDate;
    private LocalDate endDate;
    private LocalTime startTime;
    private LocalTime endTime;
    private String emailContact;
-
+   private Long amountFreeTickets;
+   private Long amountPayedTickets;
+   private Double priceTicket;
    
-   public ValidationResult Validate() {
+   @ManyToMany
+   @JoinTable(
+      name="TB_EVENT_PLACE",
+      joinColumns =  @JoinColumn(name="EVENT_ID"),
+      inverseJoinColumns = @JoinColumn(name="PLACE_ID")
+   )
+   private List<Place> places = new ArrayList<>();
+   
+ public ValidationResult Validate() {
       ValidationResult validationResult = new ValidationResult();
 
       validationResult = DatesAndTimesValidate(); 
@@ -46,11 +60,6 @@ public class Event implements Serializable{
       if(!validationResult.IsValid())
          return validationResult;
 
-      validationResult = PlaceValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-
       validationResult = EmailValidate(); 
 
       if(!validationResult.IsValid())
@@ -58,15 +67,6 @@ public class Event implements Serializable{
 
       return validationResult;
 
-   }
-  
-   public ValidationResult PlaceValidate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      if(this.place.isEmpty())
-         validationResult.setErrors("Error: The place of the event can't be empty!");
-      
-      return validationResult;
    }
 
    public ValidationResult EmailValidate() {
@@ -117,7 +117,7 @@ public class Event implements Serializable{
       this.id = id;
       this.name = name;
       this.description = description;
-      this.place = place;
+      //this.place = place;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
@@ -128,20 +128,43 @@ public class Event implements Serializable{
    public Event(EventDTOInsert eventDTO) {
       this.name = eventDTO.getName();
       this.description = eventDTO.getDescription();
-      this.place = eventDTO.getPlace();
       this.startDate = eventDTO.getStartDate();
       this.endDate = eventDTO.getEndDate();
       this.startTime = eventDTO.getStartTime();
       this.endTime = eventDTO.getEndTime();
       this.emailContact = eventDTO.getEmailContact();
+   }  
+
+   public Long getAmountFreeTickets() {
+      return amountFreeTickets;
    }
 
-   public String getPlace() {
-      return place;
+   public void setAmountFreeTickets(Long amountFreeTickets) {
+      this.amountFreeTickets = amountFreeTickets;
    }
 
-   public void setPlace(String place) {
-      this.place = place;
+   public Long getAmountPayedTickets() {
+      return amountPayedTickets;
+   }
+
+   public void setAmountPayedTickets(Long amountPayedTickets) {
+      this.amountPayedTickets = amountPayedTickets;
+   }
+
+   public Double getPriceTicket() {
+      return priceTicket;
+   }
+
+   public void setPriceTicket(Double priceTicket) {
+      this.priceTicket = priceTicket;
+   }
+
+   public List<Place> getPlaces() {
+      return places;
+   }
+
+   public void addPlace(Place place) {
+      this.places.add(place);
    }
 
    public Long getId() {
@@ -235,7 +258,6 @@ public class Event implements Serializable{
 
    public void setEventToUpdate(EventDTOUpdate eventDTOUpdate) {
          this.description = eventDTOUpdate.getDescription();
-         this.place = eventDTOUpdate.getPlace();
          this.startDate = eventDTOUpdate.getStartDate();
          this.endDate = eventDTOUpdate.getEndDate();
          this.startTime = eventDTOUpdate.getStartTime();
