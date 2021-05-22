@@ -1,5 +1,4 @@
 package com.event.system.eventsystem.dto.AdminDTO;
-
 import com.event.system.eventsystem.entities.Admin;
 
 public class AdminDTO {

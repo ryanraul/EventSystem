@@ -4,7 +4,11 @@ import com.event.system.eventsystem.dto.AdminDTO.AdminDTOInsert;
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOUpdate;
 import com.event.system.eventsystem.utils.ValidationResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -14,13 +18,8 @@ import javax.persistence.Table;
 public class Admin extends User {
    private String phoneNumber;
 
-   public String getPhoneNumber() {
-      return phoneNumber;
-   }
-
-   public void setPhoneNumber(String phoneNumber) {
-      this.phoneNumber = phoneNumber;
-   }
+   @OneToMany(mappedBy = "admin")
+   private List<Event> events = new ArrayList<>();
 
    public Admin(){
       
@@ -38,6 +37,22 @@ public class Admin extends User {
    public Admin(AdminDTOInsert adminDTOInsert) {
       super(adminDTOInsert.getName(), adminDTOInsert.getEmail());
       this.phoneNumber = adminDTOInsert.getPhoneNumber();
+   }
+
+   public List<Event> getEvents() {
+      return events;
+   }
+
+   public void addEvents(Event event) {
+      this.events.add(event);
+   }
+
+   public String getPhoneNumber() {
+      return phoneNumber;
+   }
+
+   public void setPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
    }
 
    public ValidationResult validate() {

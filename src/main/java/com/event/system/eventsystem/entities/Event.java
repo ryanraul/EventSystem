@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.EventDTOInsert;
@@ -38,6 +39,10 @@ public class Event implements Serializable{
    private Long amountFreeTickets;
    private Long amountPayedTickets;
    private Double priceTicket;
+
+   @ManyToOne
+   @JoinColumn(name = "ADMIN_USER_ID")
+   private Admin admin;
    
    @ManyToMany
    @JoinTable(
@@ -47,7 +52,7 @@ public class Event implements Serializable{
    )
    private List<Place> places = new ArrayList<>();
    
- public ValidationResult Validate() {
+   public ValidationResult Validate() {
       ValidationResult validationResult = new ValidationResult();
 
       validationResult = DatesAndTimesValidate(); 
@@ -112,17 +117,17 @@ public class Event implements Serializable{
 
    }
    
-   public Event(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
-         LocalTime endTime, String emailContact) {
+   public Event(Long id, String name, String description, LocalDate startDate, LocalDate endDate, LocalTime startTime,
+         LocalTime endTime, String emailContact, Admin admin) {
       this.id = id;
       this.name = name;
       this.description = description;
-      //this.place = place;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
       this.endTime = endTime;
       this.emailContact = emailContact;
+      this.admin = admin;
    }
 
    public Event(EventDTOInsert eventDTO) {
@@ -133,7 +138,18 @@ public class Event implements Serializable{
       this.startTime = eventDTO.getStartTime();
       this.endTime = eventDTO.getEndTime();
       this.emailContact = eventDTO.getEmailContact();
-   }  
+      this.amountFreeTickets = eventDTO.getAmountFreeTickets();
+      this.amountPayedTickets = eventDTO.getAmountPayedTickets();
+      this.priceTicket = eventDTO.getPriceTicket();
+   }    
+
+   public Admin getAdmin() {
+      return admin;
+   }
+
+   public void setAdmin(Admin admin) {
+      this.admin = admin;
+   }
 
    public Long getAmountFreeTickets() {
       return amountFreeTickets;

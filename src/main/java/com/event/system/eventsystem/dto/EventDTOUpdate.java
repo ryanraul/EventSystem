@@ -14,22 +14,53 @@ public class EventDTOUpdate {
    private LocalDate endDate;
    private LocalTime startTime;
    private LocalTime endTime;
+   private Long amountFreeTickets;
+   private Long amountPayedTickets;
+   private Double priceTicket;
+   
+   public EventDTOUpdate(){
 
-   public void setPlace(Place place) {
-      this.places.add(place);
    }
 
    public EventDTOUpdate(String description, List<Place> place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
-   LocalTime endTime) {
+   LocalTime endTime,Long amountFreeTickets,Long amountPayedTickets, Double priceTicket) {
       this.description = description;
       this.startDate = startDate;
       this.endDate = endDate;
       this.startTime = startTime;
       this.endTime = endTime;
+      this.amountFreeTickets = amountFreeTickets;
+      this.amountPayedTickets = amountPayedTickets;
+      this.priceTicket = priceTicket;
    }
 
-   public EventDTOUpdate(){
+   
+   public Long getAmountFreeTickets() {
+      return amountFreeTickets;
+   }
 
+   public void setAmountFreeTickets(Long amountFreeTickets) {
+      this.amountFreeTickets = amountFreeTickets;
+   }
+
+   public Long getAmountPayedTickets() {
+      return amountPayedTickets;
+   }
+
+   public void setAmountPayedTickets(Long amountPayedTickets) {
+      this.amountPayedTickets = amountPayedTickets;
+   }
+
+   public Double getPriceTicket() {
+      return priceTicket;
+   }
+
+   public void setPriceTicket(Double priceTicket) {
+      this.priceTicket = priceTicket;
+   }
+
+   public void addPlace(Place place) {
+      this.places.add(place);
    }
 
    public List<Place> getPlaces() {

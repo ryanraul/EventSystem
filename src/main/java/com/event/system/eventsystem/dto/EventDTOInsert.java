@@ -16,13 +16,17 @@ public class EventDTOInsert {
    private LocalTime startTime;
    private LocalTime endTime;
    private String emailContact;
+   private Long amountFreeTickets;
+   private Long amountPayedTickets;
+   private Double priceTicket;
+   private Long adminId;
 
    public EventDTOInsert(){
 
    }
 
    public EventDTOInsert(String name, String description, List<Place> places, LocalDate startDate, LocalDate endDate, LocalTime startTime,
-      LocalTime endTime, String emailContact) {
+      LocalTime endTime, String emailContact, Long amountFreeTickets,Long amountPayedTickets, Double priceTicket, Long adminId) {
       this.name = name;
       this.description = description;
       this.places = places;
@@ -31,10 +35,47 @@ public class EventDTOInsert {
       this.startTime = startTime;
       this.endTime = endTime;
       this.emailContact = emailContact;
+      this.amountFreeTickets = amountFreeTickets;
+      this.amountPayedTickets = amountPayedTickets;
+      this.priceTicket = priceTicket;
+      this.adminId = adminId;
+   }
+
+   
+   public Long getAdminId() {
+      return adminId;
+   }
+
+   public void setAdminId(Long adminId) {
+      this.adminId = adminId;
    }
 
    public List<Place> getPlaces() {
       return places;
+   }
+   
+   public Long getAmountFreeTickets() {
+      return amountFreeTickets;
+   }
+
+   public void setAmountFreeTickets(Long amountFreeTickets) {
+      this.amountFreeTickets = amountFreeTickets;
+   }
+
+   public Long getAmountPayedTickets() {
+      return amountPayedTickets;
+   }
+
+   public void setAmountPayedTickets(Long amountPayedTickets) {
+      this.amountPayedTickets = amountPayedTickets;
+   }
+
+   public Double getPriceTicket() {
+      return priceTicket;
+   }
+
+   public void setPriceTicket(Double priceTicket) {
+      this.priceTicket = priceTicket;
    }
 
    public void addPlace(Place place) {

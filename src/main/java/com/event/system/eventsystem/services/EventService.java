@@ -8,7 +8,9 @@ import javax.persistence.EntityNotFoundException;
 import com.event.system.eventsystem.dto.EventDTO;
 import com.event.system.eventsystem.dto.EventDTOInsert;
 import com.event.system.eventsystem.dto.EventDTOUpdate;
+import com.event.system.eventsystem.entities.Admin;
 import com.event.system.eventsystem.entities.Event;
+import com.event.system.eventsystem.repositories.AdminRepository;
 import com.event.system.eventsystem.repositories.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class EventService {
    @Autowired EventRepository repo;
+
+   @Autowired AdminRepository adminRepository;
 
    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String dateFilter, String description){
       try {
@@ -45,16 +49,25 @@ public class EventService {
    public EventDTO insertEvent(EventDTOInsert eventDTO){
       try {                  
          Event event = new Event(eventDTO);
+
+         Optional<Admin> adminOp = adminRepository.findById(eventDTO.getAdminId());
+         Admin admin = adminOp.orElseThrow( () -> new Exception("Admin id not found."));         
+         event.setAdmin(admin);
+         
          var validation = event.Validate();
-         if(!validation.IsValid()){
+         if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
-         }else{
-            event = repo.save(event);       
-         }
-         return new EventDTO(event);
+         else
+            event = repo.save(event);  
+
+         return new EventDTO(event); 
+
+      } catch (EmptyResultDataAccessException e) {
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
       } catch (Exception e) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
+      
    }
 
    public EventDTO updateEvent(Long id, EventDTOUpdate eventDTOUpdate){
@@ -66,6 +79,7 @@ public class EventService {
          if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
          event = repo.save(event);
+         
          return new EventDTO(event);
       } catch (EntityNotFoundException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
