@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.event.system.eventsystem.dto.PlaceDTO.PlaceDTOInsert;
+import com.event.system.eventsystem.dto.PlaceDTO.PlaceDTOUpdate;
+
 @Entity
 @Table(name = "TB_PLACE")
 public class Place implements Serializable {
@@ -27,6 +30,20 @@ public class Place implements Serializable {
    public Place(String name, String address) {
       this.name = name;
       this.address = address;
+   }
+
+   public Place(PlaceDTOInsert placeDTOInsert) {
+      this.name = placeDTOInsert.getName();
+      this.address = placeDTOInsert.getAddress();
+   }
+
+   public void setPlaceToUpdate(PlaceDTOUpdate placeDTOUpdate) {
+      this.name = placeDTOUpdate.getName();
+      this.address = placeDTOUpdate.getAddress();
+   }
+
+   public Long getId(){
+      return id;
    }
 
    public String getName() {
@@ -68,6 +85,5 @@ public class Place implements Serializable {
       } else if (!id.equals(other.id))
          return false;
       return true;
-   }
-
+   }  
 }
