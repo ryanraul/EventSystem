@@ -72,17 +72,24 @@ public class EventService {
 
    public EventDTO updateEvent(Long id, EventDTOUpdate eventDTOUpdate){
       try {
-         Event event = repo.getOne(id);
-         event.setEventToUpdate(eventDTOUpdate);
+         Optional<Event> eventOp = repo.findById(id);
+         Event event = eventOp.orElseThrow(() -> new EntityNotFoundException("Event not found"));
+         var validation = event.ValidateUpdate();
+
+         if(!validation.IsValid())
+            throw new Exception(validation.errors.get(0).message);
          
-         var validation = event.Validate();
+         event.setEventToUpdate(eventDTOUpdate);
+
+         event.Validate();
          if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
          event = repo.save(event);
          
          return new EventDTO(event);
-      } catch (EntityNotFoundException e) {
-         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+         
+      } catch (EntityNotFoundException e){
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
       } catch (Exception e) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }

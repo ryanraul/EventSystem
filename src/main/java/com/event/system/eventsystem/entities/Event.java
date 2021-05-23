@@ -74,6 +74,17 @@ public class Event implements Serializable{
 
    }
 
+   public ValidationResult ValidateUpdate(){
+      ValidationResult validationResult = new ValidationResult();
+
+      if(this.endDate.isBefore(LocalDate.now())){
+         validationResult.setErrors("Error: The event cannot be changed after its end date.");
+         return validationResult;
+      }
+      
+      return validationResult;
+   }
+
    public ValidationResult EmailValidate() {
       ValidationResult validationResult = new ValidationResult();
 
@@ -94,7 +105,7 @@ public class Event implements Serializable{
 
    public ValidationResult DatesAndTimesValidate() {
       ValidationResult validationResult = new ValidationResult();
-
+   
       if(this.startDate.isBefore(LocalDate.now())){
          validationResult.setErrors("Error: Start date must be after or equal to today!");
          return validationResult;
@@ -278,6 +289,9 @@ public class Event implements Serializable{
          this.endDate = eventDTOUpdate.getEndDate();
          this.startTime = eventDTOUpdate.getStartTime();
          this.endTime = eventDTOUpdate.getEndTime();
+         this.amountFreeTickets = eventDTOUpdate.getAmountFreeTickets();
+         this.amountPayedTickets = eventDTOUpdate.getAmountPayedTickets();
+         this.priceTicket = eventDTOUpdate.getPriceTicket();
    }
 
 
