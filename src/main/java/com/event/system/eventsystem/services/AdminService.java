@@ -11,6 +11,8 @@ import com.event.system.eventsystem.entities.Admin;
 import com.event.system.eventsystem.repositories.AdminRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -52,28 +54,24 @@ public class AdminService {
       try {
 			Admin admin = adminRepository.getOne(id);
 			admin.setAdminToUpdate(adminDTOUpdate);
-
-			var validation = admin.validate();
-			if(!validation.IsValid())
-			   throw new Exception(validation.errors.get(0).message);
             
 			admin = adminRepository.save(admin);
 			return new AdminDTO(admin);
 
       } catch (EntityNotFoundException e) {
-         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found");
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found.");
       } catch (Exception e){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
    }
 
 	public void deleteAdmin(Long id){
 		try {
 			adminRepository.deleteById(id);
-		} catch (EntityNotFoundException e) {
-         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found");
-      } catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
+		} catch (EmptyResultDataAccessException e) {
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found.");
+      } catch (DataIntegrityViolationException e){
+         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Admin cannot be deleted after he has created an event.");
+      }
 	}
 }

@@ -2,6 +2,8 @@ package com.event.system.eventsystem.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.event.system.eventsystem.dto.PlaceDTO.PlaceDTO;
 import com.event.system.eventsystem.dto.PlaceDTO.PlaceDTOInsert;
 import com.event.system.eventsystem.dto.PlaceDTO.PlaceDTOUpdate;
@@ -50,14 +52,14 @@ public class PlaceController {
    }
 
    @PostMapping
-   public ResponseEntity<PlaceDTO> insertPlace(@RequestBody PlaceDTOInsert placeDTOInsert){
+   public ResponseEntity<PlaceDTO> insertPlace(@RequestBody @Valid PlaceDTOInsert placeDTOInsert){
       PlaceDTO placeDTO = placeService.insertPlace(placeDTOInsert);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(placeDTO.getId()).toUri();
       return ResponseEntity.created(uri).body(placeDTO);
    }
 
    @PutMapping("{id}")
-   public ResponseEntity<PlaceDTO> updatePlace(@RequestBody PlaceDTOUpdate placeDTOUpdate, @PathVariable Long id){
+   public ResponseEntity<PlaceDTO> updatePlace(@RequestBody @Valid PlaceDTOUpdate placeDTOUpdate, @PathVariable Long id){
       PlaceDTO placeDTO = placeService.updatePlace(id, placeDTOUpdate);
       return ResponseEntity.ok().body(placeDTO);
    }

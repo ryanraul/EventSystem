@@ -11,6 +11,7 @@ import com.event.system.eventsystem.entities.Attend;
 import com.event.system.eventsystem.repositories.AttendRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -53,26 +54,23 @@ public class AttendService {
 			Attend attend = attendRepository.getOne(id);
 			attend.setAttendToUpdate(attendDTOUpdate);
 
-			var validation = attend.validate();
-			if(!validation.IsValid())
-			throw new Exception(validation.errors.get(0).message);
 			attend = attendRepository.save(attend);
 			return new AttendDTO(attend);
 
       } catch (EntityNotFoundException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attend not found");
       } catch (Exception e){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
    }
 
 	public void deleteAttend(Long id){
 		try {
 			attendRepository.deleteById(id);
-		} catch (EntityNotFoundException e) {
+		} catch (EmptyResultDataAccessException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attend not found");
       } catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
 }

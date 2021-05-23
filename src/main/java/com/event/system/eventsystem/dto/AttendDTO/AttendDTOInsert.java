@@ -1,8 +1,15 @@
 package com.event.system.eventsystem.dto.AttendDTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class AttendDTOInsert {
+   @NotBlank(message = "The 'name' cannot be empty!")
    private String name;
+
+   @NotBlank(message = "The 'email' cannot be empty!")
    private String email;
+   
+   @NotBlank(message = "The 'balance' cannot be empty!")
    private Float balance;
 
    public String getName() {

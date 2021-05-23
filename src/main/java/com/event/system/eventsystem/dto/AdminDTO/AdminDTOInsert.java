@@ -1,8 +1,16 @@
 package com.event.system.eventsystem.dto.AdminDTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class AdminDTOInsert {
+
+    @NotBlank(message = "The 'name' cannot be empty!")
     private String name;
+
+   @NotBlank(message = "The 'email' cannot be empty!")
     private String email;
+
+   @NotBlank(message = "The 'phone number' cannot be empty!")
     private String phoneNumber;
 
     public String getName() {

@@ -3,7 +3,7 @@ package com.event.system.eventsystem.dto.AttendDTO;
 import com.event.system.eventsystem.entities.Attend;
 
 public class AttendDTO {
-   private Long id;   
+   private Long id;
    private String name;   
    private String email;
    private Float balance;

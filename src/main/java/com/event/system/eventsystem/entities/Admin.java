@@ -2,7 +2,6 @@ package com.event.system.eventsystem.entities;
 
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOInsert;
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOUpdate;
-import com.event.system.eventsystem.utils.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,26 +52,6 @@ public class Admin extends User {
 
    public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
-   }
-
-   public ValidationResult validate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      validationResult = nameValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-      
-      return validationResult;
-   }
-
-   public ValidationResult nameValidate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      if(this.getName().isEmpty())
-         validationResult.setErrors("Error: Admin name can't be empty!");
-      
-      return validationResult;
    }
 
    public void setAdminToUpdate(AdminDTOUpdate adminDTOUpdate) {

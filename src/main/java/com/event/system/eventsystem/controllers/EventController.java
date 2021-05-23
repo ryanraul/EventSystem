@@ -2,6 +2,8 @@ package com.event.system.eventsystem.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.event.system.eventsystem.dto.EventDTO;
 import com.event.system.eventsystem.dto.EventDTOInsert;
 import com.event.system.eventsystem.dto.EventDTOUpdate;
@@ -51,14 +53,14 @@ public class EventController {
    }
 
    @PostMapping
-   public ResponseEntity<EventDTO> insertEvent(@RequestBody EventDTOInsert eventDtoInsert){
+   public ResponseEntity<EventDTO> insertEvent(@Valid @RequestBody EventDTOInsert eventDtoInsert){
       EventDTO eventDTO = service.insertEvent(eventDtoInsert);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(eventDTO.getId()).toUri();
       return ResponseEntity.created(uri).body(eventDTO);      
    }
    
    @PutMapping("{id}")
-	public ResponseEntity<EventDTO> updateEvent(@RequestBody EventDTOUpdate eventDtoUpdate, @PathVariable Long id){
+	public ResponseEntity<EventDTO> updateEvent(@Valid @RequestBody EventDTOUpdate eventDtoUpdate, @PathVariable Long id){
 		EventDTO eventDTO = service.updateEvent(id, eventDtoUpdate); 
 		return ResponseEntity.ok().body(eventDTO);
 	}

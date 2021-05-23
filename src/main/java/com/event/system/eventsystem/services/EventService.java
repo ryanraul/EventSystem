@@ -54,7 +54,7 @@ public class EventService {
          Admin admin = adminOp.orElseThrow( () -> new Exception("Admin id not found."));         
          event.setAdmin(admin);
          
-         var validation = event.Validate();
+         var validation = event.DatesAndTimesValidate();
          if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
          else
@@ -80,12 +80,11 @@ public class EventService {
             throw new Exception(validation.errors.get(0).message);
          
          event.setEventToUpdate(eventDTOUpdate);
-
-         event.Validate();
+         validation = event.DatesAndTimesValidate();
          if(!validation.IsValid())
             throw new Exception(validation.errors.get(0).message);
-         event = repo.save(event);
-         
+
+         event = repo.save(event);         
          return new EventDTO(event);
          
       } catch (EntityNotFoundException e){
@@ -101,7 +100,10 @@ public class EventService {
           repo.deleteById(id);
       } catch (EmptyResultDataAccessException e) {
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+      } catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
+      
   }
 
 

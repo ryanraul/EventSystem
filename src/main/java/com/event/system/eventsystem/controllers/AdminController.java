@@ -2,6 +2,8 @@ package com.event.system.eventsystem.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTO;
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOInsert;
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOUpdate;
@@ -51,14 +53,14 @@ public class AdminController {
    }
 
    @PostMapping
-   public ResponseEntity<AdminDTO> insertAdmin(@RequestBody AdminDTOInsert adminDTOInsert){
+   public ResponseEntity<AdminDTO> insertAdmin(@Valid @RequestBody AdminDTOInsert adminDTOInsert){
       AdminDTO adminDTO = adminService.insertAdmin(adminDTOInsert);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(adminDTO.getId()).toUri();
       return ResponseEntity.created(uri).body(adminDTO);
    }
 
    @PutMapping("{id}")
-   public ResponseEntity<AdminDTO> updateAdmin(@RequestBody AdminDTOUpdate adminDTOUpdate, @PathVariable Long id){
+   public ResponseEntity<AdminDTO> updateAdmin(@Valid @RequestBody AdminDTOUpdate adminDTOUpdate, @PathVariable Long id){
       AdminDTO adminDTO = adminService.updateAdmin(id, adminDTOUpdate);
       return ResponseEntity.ok().body(adminDTO);
    }

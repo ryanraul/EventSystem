@@ -1,9 +1,14 @@
 package com.event.system.eventsystem.dto.PlaceDTO;
 
+import javax.validation.constraints.NotBlank;
+
 import com.event.system.eventsystem.entities.Place;
 
 public class PlaceDTOInsert {
+   @NotBlank(message = "The place 'name' cannot be empty!")
    private String name;
+
+   @NotBlank(message = "The place 'address' cannot be empty!")
    private String address;
    
    public PlaceDTOInsert() {

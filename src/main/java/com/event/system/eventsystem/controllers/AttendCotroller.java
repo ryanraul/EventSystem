@@ -2,6 +2,8 @@ package com.event.system.eventsystem.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTO;
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTOInsert;
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTOUpdate;
@@ -51,14 +53,14 @@ public class AttendCotroller {
    }
 
    @PostMapping
-   public ResponseEntity<AttendDTO> insertAttend(@RequestBody AttendDTOInsert attendDTOInsert){
+   public ResponseEntity<AttendDTO> insertAttend(@Valid @RequestBody AttendDTOInsert attendDTOInsert){
       AttendDTO attendDTO = attendService.insertAttend(attendDTOInsert);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(attendDTO.getId()).toUri();
       return ResponseEntity.created(uri).body(attendDTO);
    }
 
    @PutMapping("{id}")
-   public ResponseEntity<AttendDTO> updateAttend(@RequestBody AttendDTOUpdate attendDTOUpdate, @PathVariable Long id){
+   public ResponseEntity<AttendDTO> updateAttend(@Valid @RequestBody AttendDTOUpdate attendDTOUpdate, @PathVariable Long id){
       AttendDTO attendDTO = attendService.updateAttend(id, attendDTOUpdate);
       return ResponseEntity.ok().body(attendDTO);
    }

@@ -4,18 +4,38 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.event.system.eventsystem.entities.Place;
 
 public class EventDTOUpdate {
    
    private String description;
    private List<Place> places;
+   
+   @NotNull(message = "The start date of event cannot be empty")
    private LocalDate startDate;
+
+   @NotNull(message = "The end date of event cannot be empty")
    private LocalDate endDate;
+
+   @NotNull(message = "The start time of event cannot be empty")
    private LocalTime startTime;
+
+   @NotNull(message = "The end time of event cannot be empty")
    private LocalTime endTime;
+   
+   @NotBlank(message = "The email of contact can't be empty!")
+   private String emailContact;
+
+   @NotNull(message = "The free tickets amount can't be empty!")
    private Long amountFreeTickets;
+
+   @NotNull(message = "The payed tickets amount can't be empty!")
    private Long amountPayedTickets;
+
+   @NotNull(message = "The ticket price can't be empty!")
    private Double priceTicket;
    
    public EventDTOUpdate(){
@@ -23,7 +43,7 @@ public class EventDTOUpdate {
    }
 
    public EventDTOUpdate(String description, List<Place> place, LocalDate startDate, LocalDate endDate, LocalTime startTime,
-   LocalTime endTime,Long amountFreeTickets,Long amountPayedTickets, Double priceTicket) {
+   LocalTime endTime, String emailContact, Long amountFreeTickets,Long amountPayedTickets, Double priceTicket) {
       this.description = description;
       this.startDate = startDate;
       this.endDate = endDate;
@@ -34,7 +54,14 @@ public class EventDTOUpdate {
       this.priceTicket = priceTicket;
    }
 
-   
+   public String getEmailContact() {
+      return emailContact;
+   }
+
+   public void setEmailContact(String emailContact) {
+      this.emailContact = emailContact;
+   }
+
    public Long getAmountFreeTickets() {
       return amountFreeTickets;
    }

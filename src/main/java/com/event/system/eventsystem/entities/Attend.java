@@ -6,7 +6,6 @@ import javax.persistence.Table;
 
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTOInsert;
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTOUpdate;
-import com.event.system.eventsystem.utils.ValidationResult;
 
 @Entity
 @Table(name = "TB_ATTEND")
@@ -44,26 +43,6 @@ public class Attend extends User {
       this.setEmail(attendDTOUpdate.getEmail());
       this.setBalance(attendDTOUpdate.getBalance());
    }
-
-   public ValidationResult validate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      validationResult = nameValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-      
-      return validationResult;
-   }
-
-   public ValidationResult nameValidate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      if(this.getName().isEmpty())
-         validationResult.setErrors("Error: Attend name can't be empty!");
-      
-      return validationResult;
-   }
-   
+  
    
 }

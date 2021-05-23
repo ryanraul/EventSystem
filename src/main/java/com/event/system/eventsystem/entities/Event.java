@@ -51,28 +51,6 @@ public class Event implements Serializable{
       inverseJoinColumns = @JoinColumn(name="PLACE_ID")
    )
    private List<Place> places = new ArrayList<>();
-   
-   public ValidationResult Validate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      validationResult = DatesAndTimesValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-      
-      validationResult = NameValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-
-      validationResult = EmailValidate(); 
-
-      if(!validationResult.IsValid())
-         return validationResult;
-
-      return validationResult;
-
-   }
 
    public ValidationResult ValidateUpdate(){
       ValidationResult validationResult = new ValidationResult();
@@ -81,24 +59,6 @@ public class Event implements Serializable{
          validationResult.setErrors("Error: The event cannot be changed after its end date.");
          return validationResult;
       }
-      
-      return validationResult;
-   }
-
-   public ValidationResult EmailValidate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      if(this.emailContact.isEmpty())
-         validationResult.setErrors("Error: The name of event can't be empty!");
-      
-      return validationResult;
-   }
-
-   public ValidationResult NameValidate() {
-      ValidationResult validationResult = new ValidationResult();
-
-      if(this.name.isEmpty())
-         validationResult.setErrors("Error: The email of contact can't be empty!");
       
       return validationResult;
    }

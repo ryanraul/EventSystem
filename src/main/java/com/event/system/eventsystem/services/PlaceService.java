@@ -11,6 +11,8 @@ import com.event.system.eventsystem.entities.Place;
 import com.event.system.eventsystem.repositories.PlaceRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -52,28 +54,24 @@ public class PlaceService {
          Place place = placeRepository.getOne(id);
          place.setPlaceToUpdate(placeDTOUpdate);
 
-         // var validation = place.validate();
-         // if(!validation.IsValid())
-         //    throw new Exception(validation.errors.get(0).message);
-
          place = placeRepository.save(place);
          return new PlaceDTO(place);
 
       } catch (EntityNotFoundException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Place not found");
-      }catch (Exception e){
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
+      } catch (Exception e){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+      }
    }
 
    public void deletePlace(Long id){
       try {
          placeRepository.deleteById(id);
-      } catch (EntityNotFoundException e) {
+      } catch (EmptyResultDataAccessException e) {
          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Place not found");
-      } catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
+      } catch (DataIntegrityViolationException e){
+         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The place cannot be deleted after being used at the event.");
+      }
    }
 
 
