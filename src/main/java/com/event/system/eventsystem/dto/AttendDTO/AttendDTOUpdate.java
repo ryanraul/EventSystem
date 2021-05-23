@@ -1,12 +1,13 @@
 package com.event.system.eventsystem.dto.AttendDTO;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class AttendDTOUpdate {
    @NotBlank(message = "The email cannot be empty!")
    private String email;
 
-   @NotBlank(message = "The balance cannot be empty!")
+   @NotNull(message = "The 'balance' cannot be empty!")
    private Float balance;
 
    public String getEmail() {
