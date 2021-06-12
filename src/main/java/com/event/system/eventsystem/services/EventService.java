@@ -1,7 +1,9 @@
 package com.event.system.eventsystem.services;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -10,8 +12,11 @@ import com.event.system.eventsystem.dto.EventDTOInsert;
 import com.event.system.eventsystem.dto.EventDTOUpdate;
 import com.event.system.eventsystem.entities.Admin;
 import com.event.system.eventsystem.entities.Event;
+import com.event.system.eventsystem.entities.Place;
 import com.event.system.eventsystem.repositories.AdminRepository;
 import com.event.system.eventsystem.repositories.EventRepository;
+import com.event.system.eventsystem.repositories.PlaceRepository;
+import com.event.system.eventsystem.utils.ValidationResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
    @Autowired EventRepository repo;
 
+   @Autowired PlaceRepository placeRepository;
    @Autowired AdminRepository adminRepository;
 
    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String dateFilter, String description){
@@ -102,9 +108,74 @@ public class EventService {
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
       } catch (Exception e) {
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-      }
-      
+      } 
   }
 
+  public EventDTO insertPlaceEvent(Long eventId, Long placeId){
+      try {
+         Optional<Event> eventOp = repo.findById(eventId);
+         Event event = eventOp.orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+         if(event.getEndDate().isBefore(LocalDate.now()))
+            throw new Exception("This event has already happened");
+
+         Optional<Place> placeOp = placeRepository.findById(placeId);
+         Place place = placeOp.orElseThrow(() -> new EntityNotFoundException("Place not found"));
+
+         List<Event> eventsSamePlace = repo.findAll().stream()
+                                          .filter(e -> e.getEndDate().isAfter(LocalDate.now()))
+                                          .filter(e -> e.getPlaces().stream().filter(p-> p.getId() == placeId).count() != 0)
+                                          .collect(Collectors.toList());
+      
+         var validation = checkingAvailabilityEventsPlaces(event, eventsSamePlace);
+
+         if(!validation.IsValid())
+            throw new Exception(validation.errors.get(0).message);
+
+         event.addPlace(place);
+         event = repo.save(event);         
+         return new EventDTO(event);
+         
+      } catch (EntityNotFoundException e){
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+      } catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+      }   
+   }
+
+   public void deletePlaceEvent(Long eventId, Long placeId) {
+      try {
+         Optional<Event> eventOp = repo.findById(eventId);
+         Event event = eventOp.orElseThrow(() -> new EntityNotFoundException("Event not found."));
+
+         if(event.getEndDate().isBefore(LocalDate.now()))
+            throw new Exception("This event has already happened.");
+
+         Optional<Place> placeOp = placeRepository.findById(placeId);
+         Place place = placeOp.orElseThrow(() -> new EntityNotFoundException("Place not found."));
+
+         event.removePlace(place);
+         event = repo.save(event); 
+
+      } catch (EntityNotFoundException e){
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+      } catch (Exception e) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+      }  
+   }
+
+   private ValidationResult checkingAvailabilityEventsPlaces(Event event, List<Event> eventsSamePlace) {
+      ValidationResult validationResult = new ValidationResult();
+
+      for (Event eventSamePlace : eventsSamePlace) {
+         if(eventSamePlace.getStartDate().isAfter(event.getEndDate()) && eventSamePlace.getEndDate().isBefore(event.getStartDate())){
+            continue;
+         }
+
+         validationResult.setErrors("Error: This place is reserved for " + eventSamePlace.getName());
+         return validationResult;         
+      }
+      return validationResult;
+   }
 
 }

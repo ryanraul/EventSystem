@@ -88,6 +88,7 @@ public class Event implements Serializable{
       
       return validationResult;
    }
+   
 
    public Event(){
 
@@ -157,6 +158,10 @@ public class Event implements Serializable{
 
    public void addPlace(Place place) {
       this.places.add(place);
+   }
+
+   public void removePlace(Place place) {
+      this.places.remove(place);
    }
 
    public Long getId() {
