@@ -9,6 +9,8 @@ import com.event.system.eventsystem.dto.AttendDTO.AttendDTOInsert;
 import com.event.system.eventsystem.dto.AttendDTO.AttendDTOUpdate;
 import com.event.system.eventsystem.entities.Attend;
 import com.event.system.eventsystem.repositories.AttendRepository;
+import com.event.system.eventsystem.repositories.UserRepository;
+import com.event.system.eventsystem.utils.ValidationResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +24,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class AttendService {
    @Autowired
    private AttendRepository attendRepository;
+
+   @Autowired
+   private UserRepository userRepository;
 
    public Page<AttendDTO> getAttendees(PageRequest pageRequest, String name, String email){
 		try {
@@ -42,11 +47,32 @@ public class AttendService {
    public AttendDTO insertAttend(AttendDTOInsert attendDTOInsert) {
       try {
          Attend attend = new Attend(attendDTOInsert);
+
+         var validationResult = emailValidate(attend.getEmail());
+
+         if(!validationResult.IsValid())
+            throw new Exception(validationResult.errors.get(0).message);
+
          attend = attendRepository.save(attend);
          return new AttendDTO(attend);
       }catch (Exception e){
          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
       }
+   }
+
+   private ValidationResult emailValidate(String email) {
+      try {
+         ValidationResult validationResult = new ValidationResult();
+         var users = userRepository.findAll();
+         var emailInUse = users.stream().filter(u -> u.getEmail().equals(email)).count() != 0;
+         
+         if(emailInUse)
+            validationResult.setErrors("Error: Email is already in use");
+         
+         return validationResult;     
+      } catch (Exception e){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
    }
 
    public AttendDTO updateAttend(Long id, AttendDTOUpdate attendDTOUpdate) {

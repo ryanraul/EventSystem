@@ -9,6 +9,8 @@ import com.event.system.eventsystem.dto.AdminDTO.AdminDTOInsert;
 import com.event.system.eventsystem.dto.AdminDTO.AdminDTOUpdate;
 import com.event.system.eventsystem.entities.Admin;
 import com.event.system.eventsystem.repositories.AdminRepository;
+import com.event.system.eventsystem.repositories.UserRepository;
+import com.event.system.eventsystem.utils.ValidationResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +25,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class AdminService {
    @Autowired
    private AdminRepository adminRepository;
+
+   @Autowired
+   private UserRepository userRepository;
 
    public Page<AdminDTO> getAdmins(PageRequest pageRequest, String name, String email){
 		try {
@@ -43,12 +48,33 @@ public class AdminService {
     public AdminDTO insertAdmin(AdminDTOInsert adminDTOInsert) {
         try {
             Admin admin = new Admin(adminDTOInsert);
+
+            var validationResult = emailValidate(admin.getEmail());
+
+            if(!validationResult.IsValid())
+               throw new Exception(validationResult.errors.get(0).message);
+
             admin = adminRepository.save(admin);
             return new AdminDTO(admin);
         }catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
+    private ValidationResult emailValidate(String email) {
+      try {
+         ValidationResult validationResult = new ValidationResult();
+         var users = userRepository.findAll();
+         var emailInUse = users.stream().filter(u -> u.getEmail().equals(email)).count() != 0;
+         
+         if(emailInUse)
+            validationResult.setErrors("Error: Email is already in use");
+         
+         return validationResult;     
+      } catch (Exception e){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+   }
 
    public AdminDTO updateAdmin(Long id, AdminDTOUpdate adminDTOUpdate) {
       try {
