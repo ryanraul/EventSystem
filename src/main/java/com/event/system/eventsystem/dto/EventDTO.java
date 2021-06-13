@@ -11,6 +11,8 @@ public class EventDTO {
    private List<Place> places;
    private Long amountFreeTickets;
    private Long amountPayedTickets;
+   private Long freeTickectsSelled;
+   private Long payedTickectsSelled;
    private Double priceTicket;
       
    public EventDTO (){
@@ -23,18 +25,39 @@ public class EventDTO {
       this.places = event.getPlaces();
       this.amountFreeTickets = event.getAmountFreeTickets();
       this.amountPayedTickets = event.getAmountPayedTickets();
+      this.freeTickectsSelled = event.getFreeTickectsSelled();
+      this.payedTickectsSelled = event.getPayedTickectsSelled();
       this.priceTicket = event.getPriceTicket();
    }
 
-   public EventDTO(Long id, String name, List<Place> places, Long amountFreeTickets,Long amountPayedTickets, Double priceTicket, Long adminId) {
+   public EventDTO(Long id, String name, List<Place> places, Long amountFreeTickets,Long amountPayedTickets, Long freeTickectsSelled,Long payedTickectsSelled, Double priceTicket, Long adminId) {
       this.id = id;
       this.name = name;
       this.places = places;
       this.priceTicket = priceTicket;
       this.amountFreeTickets = amountFreeTickets;
       this.amountPayedTickets = amountPayedTickets;
+      this.freeTickectsSelled = freeTickectsSelled;
+      this.payedTickectsSelled = payedTickectsSelled;
    }
  
+   
+   public Long getFreeTickectsSelled() {
+      return freeTickectsSelled;
+   }
+
+   public void setFreeTickectsSelled(Long freeTickectsSelled) {
+      this.freeTickectsSelled = freeTickectsSelled;
+   }
+
+   public Long getPayedTickectsSelled() {
+      return payedTickectsSelled;
+   }
+
+   public void setPayedTickectsSelled(Long payedTickectsSelled) {
+      this.payedTickectsSelled = payedTickectsSelled;
+   }
+
    public Long getAmountFreeTickets() {
       return amountFreeTickets;
    }

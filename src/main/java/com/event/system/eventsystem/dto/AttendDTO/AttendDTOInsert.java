@@ -1,7 +1,6 @@
 package com.event.system.eventsystem.dto.AttendDTO;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class AttendDTOInsert {
    @NotBlank(message = "The 'name' cannot be empty!")
@@ -10,9 +9,6 @@ public class AttendDTOInsert {
    @NotBlank(message = "The 'email' cannot be empty!")
    private String email;
    
-   @NotNull(message = "The 'balance' cannot be empty!")
-   private Float balance;
-
    public String getName() {
       return name;
    }
@@ -27,14 +23,6 @@ public class AttendDTOInsert {
 
    public void setEmail(String email) {
       this.email = email;
-   }
-
-   public Float getBalance() {
-      return balance;
-   }
-   
-   public void setBalance(Float balance) {
-      this.balance = balance;
    }
 
    

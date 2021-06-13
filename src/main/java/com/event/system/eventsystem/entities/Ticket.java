@@ -20,6 +20,7 @@ public class Ticket implements Serializable {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
    private TicketType type;
    private Instant date;
    private Double price;
@@ -43,6 +44,20 @@ public class Ticket implements Serializable {
       this.price = price;
    }
 
+   public Ticket(TicketType type, Instant date, Double price, Event event, Attend attend) {
+      this.type = type;
+      this.date = date;
+      this.price = price;
+      this.event = event;
+      this.attend = attend;
+   }
+   
+   public Long getId() {
+      return id;
+   }
+   public Attend getAttend() {
+      return attend;
+   }
    public TicketType getType() {
       return type;
    }

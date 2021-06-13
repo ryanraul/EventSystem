@@ -4,9 +4,11 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import com.event.system.eventsystem.dto.AttendEventTicketDTO;
 import com.event.system.eventsystem.dto.EventDTO;
 import com.event.system.eventsystem.dto.EventDTOInsert;
 import com.event.system.eventsystem.dto.EventDTOUpdate;
+import com.event.system.eventsystem.dto.EventTicketDTO;
 import com.event.system.eventsystem.services.EventService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +87,24 @@ public class EventController {
 		return ResponseEntity.noContent().build();
 	}
 
+   @GetMapping("{eventId}/tickets")
+   public ResponseEntity<EventTicketDTO> getEventTickets(@PathVariable Long eventId){
+      EventTicketDTO eventTickets = service.getEventTickets(eventId);
+      return ResponseEntity.ok(eventTickets);
+   }
+
+   @PostMapping("{eventId}/tickets")
+   public ResponseEntity<AttendEventTicketDTO> ticketSale(@PathVariable Long eventId, @RequestBody AttendEventTicketDTO attendTicket){
+
+      AttendEventTicketDTO attendEvent = service.ticketSale(eventId, attendTicket);
+      URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(attendEvent.getAttendId()).toUri();
+      return ResponseEntity.created(uri).body(attendEvent);      
+   }
+
+   @DeleteMapping("{eventId}/tickets")
+	public ResponseEntity<Void> deleteEventTicket(@PathVariable Long eventId, @RequestBody AttendEventTicketDTO attendTicket){
+		service.deleteEventTicket(eventId, attendTicket); 
+		return ResponseEntity.noContent().build();
+	}
    
 }

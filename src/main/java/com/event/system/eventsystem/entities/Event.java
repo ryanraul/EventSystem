@@ -40,6 +40,8 @@ public class Event implements Serializable{
    private String emailContact;
    private Long amountFreeTickets;
    private Long amountPayedTickets;
+   private Long freeTickectsSelled;
+   private Long payedTickectsSelled;
    private Double priceTicket;
 
    @ManyToOne
@@ -117,8 +119,35 @@ public class Event implements Serializable{
       this.emailContact = eventDTO.getEmailContact();
       this.amountFreeTickets = eventDTO.getAmountFreeTickets();
       this.amountPayedTickets = eventDTO.getAmountPayedTickets();
+      this.freeTickectsSelled = 0L;
+      this.payedTickectsSelled = 0L;
       this.priceTicket = eventDTO.getPriceTicket();
    }    
+  
+
+   public Long getFreeTickectsSelled() {
+      return freeTickectsSelled;
+   }
+
+   public void setFreeTickectsSelled(Long freeTickectsSelled) {
+      this.freeTickectsSelled = freeTickectsSelled;
+   }
+
+   public Long getPayedTickectsSelled() {
+      return payedTickectsSelled;
+   }
+
+   public void setPayedTickectsSelled(Long payedTickectsSelled) {
+      this.payedTickectsSelled = payedTickectsSelled;
+   }
+
+   public void addTicket(Ticket ticket) {
+      this.tickets.add(ticket);
+   }
+
+   public void removeTicket(Ticket ticket) {
+      this.tickets.remove(ticket);
+   }
 
    public Admin getAdmin() {
       return admin;
@@ -152,6 +181,10 @@ public class Event implements Serializable{
       this.priceTicket = priceTicket;
    }
 
+   public List<Ticket> getTickets() {
+      return tickets;
+   }
+   
    public List<Place> getPlaces() {
       return places;
    }

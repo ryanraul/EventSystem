@@ -6,7 +6,7 @@ public class AttendDTO {
    private Long id;
    private String name;   
    private String email;
-   private Float balance;
+   private Double balance;
    
    public AttendDTO(Attend attend) {
       this.id = attend.getId();
@@ -33,10 +33,10 @@ public class AttendDTO {
    public void setEmail(String email) {
       this.email = email;
    }
-   public Float getBalance() {
+   public Double getBalance() {
       return balance;
    }
-   public void setBalance(Float balance) {
+   public void setBalance(Double balance) {
       this.balance = balance;
    }
 }
