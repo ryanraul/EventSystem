@@ -49,6 +49,7 @@ public class Attend extends User {
 
    public Attend(AttendDTOInsert attendeeDTOInsert){
       super(attendeeDTOInsert.getName(), attendeeDTOInsert.getEmail());
+      this.balance = 0.0;
    }
 
    public Double getBalance() {
