@@ -1,7 +1,7 @@
 
 
 # AC2 - Programção Orientada a Objetos II
-### **Desenvlvido por: Raul Ryan Deaque Silva - RA: 190953**
+### **Desenvlvido por: Raul Ryan Deaque Silva**
 ***JSON's utilizados nos metodos POST e UPDATE***
 
 
